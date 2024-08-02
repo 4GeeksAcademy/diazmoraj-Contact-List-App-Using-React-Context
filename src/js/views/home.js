@@ -10,7 +10,7 @@ export const Home = () => (
 			<img src={rigoImage}/>
 		</p>
 		<Link to="/card">
-			<button className="btn btn-success">Go to Card</button>
+			<button className="btn btn-success">Go Card</button>
 		</Link>
 	</div>
 );

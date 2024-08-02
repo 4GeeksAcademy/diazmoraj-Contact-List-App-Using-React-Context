@@ -13,10 +13,12 @@ const AddContact = () => {
             <input type="phone" placeholder="Enter Phone"></input>
             <label>Adress</label>
             <input type="text" placeholder="Enter Adress"></input>
-            <Link to={"/"}>
+            <Link to="/card">
                 <button type="button" class="btn btn-primary">Save</button>
             </Link>
-            <a href="home.js">Get Back to Contacts</a>
+            <Link to="/card">
+                <a href="home.js">Get Back to Contacts</a>
+            </Link>
         </div>
 
     )

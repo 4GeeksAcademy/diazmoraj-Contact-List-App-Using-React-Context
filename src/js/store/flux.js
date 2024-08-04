@@ -1,54 +1,90 @@
+import { json } from "react-router";
+
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
-			demo: [
-				{
-					title: "FIRST",
-					background: "white",
-					initial: "white"
-				},
-				{
-					title: "SECOND",
-					background: "white",
-					initial: "white"
-				}
-			],
-			message: "Default message un fluz¿x.js file",
 			contacts: []
 		},
-		actions: {
-			// Use getActions to call a function within a fuction
-			exampleFunction: () => {
-				getActions().changeColor(0, "green");
-			},
-			loadSomeData: () => {
-				/**
-					fetch().then().then(data => setStore({ "foo": data.bar }))
-				*/
-			},
-			changeColor: (index, color) => {
-				//get the store
-				const store = getStore();
-
-				//we have to loop the entire demo array to look for the respective index
-				//and change its color
-				const demo = store.demo.map((elm, i) => {
-					if (i === index) elm.background = color;
-					return elm;
-				});
-
-				//reset the global store
-				setStore({ demo: demo });
-			},
+		actions: {	
 			getContacts: () => {
 				fetch("https://playground.4geeks.com/contact/agendas/jdiazmora/contacts")
 				.then((response) => {
 					return response.json()})
-				.then((data) => {console.log("data: ", data);
-					setStore({contacts: data.contacts})
+				.then((data) => {setStore({contacts: data.contacts})
 				})
 				.catch((error) => {return error})
-			}
+			},
+
+			getContacts: (id) => {
+				fetch(`https://playground.4geeks.com/contact/agendas/jdiazmora/contacts/${id}`)
+				.then((response) => {
+					return response.json()})
+				.then((data) => {
+					setStore({contacts: data.contacts
+					})
+				})
+				.catch((error) => {
+					return error
+				})
+			},
+
+			addContacts: function (name, phone, email, address) {
+				fetch("https://playground.4geeks.com/contact/agendas/jdiazmora/contacts",{
+					method:'POST',
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify({
+						name: name,
+						phone: phone,
+						email: email,
+						address: address
+					}),
+				})
+				.then((response) => {
+					return response.json
+				})
+				.then((data) => {
+					getActions().getContacts();
+				})
+				.catch((error) => {
+					return error
+				})
+			},
+
+			updateContact: function (id, updateContact) {
+				fetch(`https://playground.4geeks.com/contact/agendas/jdiazmora/contacts/${id}`,{
+					method: 'PUT',
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify(updateContact),
+				})
+				.then((response) => {
+					return response.json
+				})
+				.then((data) => {
+					data
+				})
+				.catch((error) => {
+					return error
+				})
+			},
+
+			delContacts: function(id) {
+				fetch(`https://playground.4geeks.com/contact/agendas/jdiazmora/contacts/${id}`,{
+					method: 'DELETE'
+				})
+				.then((response) => {
+					return response.json
+				})
+				.then((data) => {
+					getActions().getContacts();
+				})
+				.catch((error) => {
+					return error
+				})
+			},
 		}
 	};
 };

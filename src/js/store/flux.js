@@ -12,7 +12,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 					background: "white",
 					initial: "white"
 				}
-			]
+			],
+			message: "Default message un fluz¿x.js file",
+			contacts: []
 		},
 		actions: {
 			// Use getActions to call a function within a fuction
@@ -37,6 +39,15 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 				//reset the global store
 				setStore({ demo: demo });
+			},
+			getContacts: () => {
+				fetch("https://playground.4geeks.com/contact/agendas/jdiazmora/contacts")
+				.then((response) => {
+					return response.json()})
+				.then((data) => {console.log("data: ", data);
+					setStore({contacts: data.contacts})
+				})
+				.catch((error) => {return error})
 			}
 		}
 	};

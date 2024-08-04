@@ -4,6 +4,7 @@ import { Link, useParams } from "react-router-dom";
 import '@fortawesome/fontawesome-free/css/all.min.css'
 
 const Card = () => {
+    const {store, actions} = useContext(Context);
     const params = useParams()
     return(
         <div>
@@ -22,11 +23,6 @@ const Card = () => {
                     <i class="fa-solid fa-pencil"></i>
                 </Link>
                 <i class="fa-solid fa-pencil"></i>
-            </div>
-            <div className="m-5">
-                <Link to="/">
-                    <a href="#" className="btn btn-primary">Go Home</a>
-                </Link>
             </div>
         </div>
     )

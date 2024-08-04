@@ -16,7 +16,7 @@ const AddContact = () => {
             <Link to="/card">
                 <button type="button" class="btn btn-primary">Save</button>
             </Link>
-            <Link to="/card">
+            <Link to="/">
                 <a href="home.js">Get Back to Contacts</a>
             </Link>
         </div>

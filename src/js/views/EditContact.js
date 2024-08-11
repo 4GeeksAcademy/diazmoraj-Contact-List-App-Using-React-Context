@@ -1,12 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Link, useAsyncError, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate, Navigate } from "react-router-dom";
 import { Context } from "../store/appContext";
-import AddContact from "./AddContact";
 
 const EditContact = () => {
     const {store, actios} = useContext(Context);
     const params = useParams();
-    const [upContact, setUpContact] = useState({
+    const [editContact, setEditContact] = useState({
         name: "",
         phone: "",
         email: "",
@@ -15,27 +14,35 @@ const EditContact = () => {
 
     useEffect(() => {
         if(params.id) {
-            const contact = store.contacts.find(item => item.id == params.id)
-            setUpContact({
-                name: contact.name,
-                phone: contact.phone,
-                email: contact.email,
-                address: contact.address
-            })
+            const contact = store.contacts.find(item => item.id == parseInt(params.id));
+            if (contact) {
+                setEditContact({
+                    name: contact.name,
+                    phone: contact.phone,
+                    email: contact.email,
+                    address: contact.address
+                })
+            }
         }
-    }, [params])
+    }, [params.id, store.contacts])
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        actions.editContact(params.id, editContact);
+        Navigate('/');
+    };
 
     return(
         <div className="container">
             <h1 className="text-center mt-5">Edit Contact</h1>
-            <form>
+            <form onSubmit={handleSubmit}>
                 <div className="mb-3">
                     <label
                         className="form-label">Full Name
                     </label>
                     <input
-                        onChange={(e) => setUpContact({...upContact, name: e.target.value})}
-                        value={upContact.name}
+                        onChange={(e) => setEditContact({...editContact, name: e.target.value})}
+                        value={editContact.name}
                         type="text"
                         className="form-control"
                         placeholder="Full Name"
@@ -47,8 +54,8 @@ const EditContact = () => {
                         className="form-label">Phone Number
                     </label>
                     <input
-                        onChange={(e) => setUpContact({...upContact, phone: e.target.value})}
-                        value={upContact.phone}
+                        onChange={(e) => setEditContact({...editContact, phone: e.target.value})}
+                        value={editContact.phone}
                         type="text"
                         className="form-control"
                         placeholder="Name"
@@ -60,8 +67,8 @@ const EditContact = () => {
                         className="form-label">Email
                     </label>
                     <input
-                        onChange={(e) => setUpContact({...upContact, email: e.target.value})}
-                        value={upContact.email}
+                        onChange={(e) => setEditContact({...editContact, email: e.target.value})}
+                        value={editContact.email}
                         type="text"
                         className="form-control"
                         placeholder="Email"
@@ -70,11 +77,11 @@ const EditContact = () => {
 
                 <div className="mb-3">
                     <label
-                        className="form-label">Full Name
+                        className="form-label">Address
                     </label>
                     <input
-                        onChange={(e) => setUpContact({...upContact, address: e.target.value})}
-                        value={upContact.address}
+                        onChange={(e) => setEditContact({...editContact, address: e.target.value})}
+                        value={editContact.address}
                         type="text"
                         className="form-control"
                         placeholder="Address"
@@ -82,20 +89,9 @@ const EditContact = () => {
                 </div>
 
                 <div className="d-grid gap-2">
-                    <Link to="/">
-                        <button
-                            onClick={() => {
-                                actions.updateContact(params.id, upContact);
-                            }}
-                            type="button" 
-                            class="btn btn-primary">Save
-                        </button>
-                    </Link>
-                    <Link to="/">
-                        <a href="home.js">Get Back to Contacts</a>
-                    </Link>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                    <Link to="/">Back to Contacts</Link>
                 </div>
-
             </form>
         </div>
     );

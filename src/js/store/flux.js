@@ -3,29 +3,21 @@ import { json } from "react-router";
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
-			contacts: []
+			contacts: [],
 		},
 		actions: {	
 			getContacts: () => {
 				fetch("https://playground.4geeks.com/contact/agendas/jdiazmora/contacts")
-				.then((response) => {
-					return response.json()})
-				.then((data) => {setStore({contacts: data.contacts})
-				})
-				.catch((error) => {return error})
+				.then((response) => response.json())
+				.then((data) => setStore({contacts: data.contacts}))
+				.catch((error) => error)
 			},
 
-			getContacts: (id) => {
+			getContact: (id) => {
 				fetch(`https://playground.4geeks.com/contact/agendas/jdiazmora/contacts/${id}`)
-				.then((response) => {
-					return response.json()})
-				.then((data) => {
-					setStore({contacts: data.contacts
-					})
-				})
-				.catch((error) => {
-					return error
-				})
+				.then((response) => response.json())
+				.then((data) => setStore({contact: [data.contact]}))
+				.catch((error) => error)
 			},
 
 			addContacts: function (name, phone, email, address) {
@@ -41,49 +33,31 @@ const getState = ({ getStore, getActions, setStore }) => {
 						address: address
 					}),
 				})
-				.then((response) => {
-					return response.json
-				})
-				.then((data) => {
-					getActions().getContacts();
-				})
-				.catch((error) => {
-					return error
-				})
+				.then((response) => response.json())
+				.then(() => getActions().getContacts())
+				.catch((error) => error)
 			},
 
-			updateContact: function (id, updateContact) {
+			editContact: function (id, editContact) {
 				fetch(`https://playground.4geeks.com/contact/agendas/jdiazmora/contacts/${id}`,{
 					method: 'PUT',
 					headers: {
 						"Content-Type": "application/json",
 					},
-					body: JSON.stringify(updateContact),
+					body: JSON.stringify(editContact),
 				})
-				.then((response) => {
-					return response.json
-				})
-				.then((data) => {
-					data
-				})
-				.catch((error) => {
-					return error
-				})
+				.then((response) => response.json())
+				.then(() => getActions().getContacts())
+				.catch((error) => error)
 			},
 
 			delContacts: function(id) {
 				fetch(`https://playground.4geeks.com/contact/agendas/jdiazmora/contacts/${id}`,{
 					method: 'DELETE'
 				})
-				.then((response) => {
-					return response.json
-				})
-				.then((data) => {
-					getActions().getContacts();
-				})
-				.catch((error) => {
-					return error
-				})
+				.then((response) => response.json())
+				.then(() => getActions().getContacts())
+				.catch((error) => error)
 			},
 		}
 	};

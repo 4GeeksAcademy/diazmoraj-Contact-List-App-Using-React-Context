@@ -70,9 +70,9 @@ const AddContact = () => {
                     </Link>
                     <button
                         onClick={() => {
-                            actions.AddContact(name, phone, email, address);
+                            actions.addContacts(name, phone, email, address);
                         }}
-                        type="submit" class="btn btn-primary">Save
+                        type="submit" className="btn btn-primary">Save
                     </button>
                 </div>
             </form>

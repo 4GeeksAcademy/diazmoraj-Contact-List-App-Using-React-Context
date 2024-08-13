@@ -1,10 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Link, useParams, useNavigate, Navigate } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import { Context } from "../store/appContext";
 
 const EditContact = () => {
-    const {store, actios} = useContext(Context);
+    const {store, actions} = useContext(Context);
     const params = useParams();
+    const navigate = useNavigate();
     const [editContact, setEditContact] = useState({
         name: "",
         phone: "",
@@ -29,7 +30,7 @@ const EditContact = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         actions.editContact(params.id, editContact);
-        Navigate('/');
+        navigate('/');
     };
 
     return(
@@ -87,10 +88,11 @@ const EditContact = () => {
                         placeholder="Address"
                     />
                 </div>
-
-                <div className="d-grid gap-2">
-                    <button type="submit" class="btn btn-primary">Save</button>
-                    <Link to="/">Back to Contacts</Link>
+                <div className="d-flex justify-content-between align-items-center gap-2">
+                    <Link to="/" className="text-decoration-none">
+                        Get Back to Contacts
+                    </Link>
+                    <button type="submit" className="btn btn-primary">Save</button>
                 </div>
             </form>
         </div>

@@ -1,42 +1,47 @@
-import React, { useContext, useEffect } from "react";
-import { Context } from "./../store/appContext"
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import "bootstrap-icons/font/bootstrap-icons.css";
+import { Context } from "../store/appContext";
 
-const Card = () => {
-    const { store, actions } = useContext(Context);
+const Card = ({ contact }) => {
+    const { actions } = useContext(Context)
 
-    useEffect(() => {
-        actions.getContacts();
-    },[actions]);
-
-    const contacts = store.contacts || [];
+    const handleDelete = (id) => {
+        if (actions && actions.delContacts) {
+            actions.delContacts(id)
+        }
+    }
 
     return (
-        <div className="d-flex flex-wrap">
-            {store.contacts && store.contacs.length > 0 ? (
-                store.contacts.map((contact) => (
-                    <div key={contact.id} className="card m-3" style={{ width: "18rem" }}>
-                    <img src="..." className="card-img-top" alt={contact.name} />
-                    <div className="card-body">
-                        <h5 className="card-title">Name: {contact.name}</h5>
-                        <p className="card-text">Phone: {contact.phone}</p>
-                        <p className="card-text">Email: {contact.email}</p>
-                        <p className="card-text">Address: {contact.address}</p>
-                    </div>
-                    <div className="d-flex justify-content-end align-items-center gap-2 p-2">
-                        <Link to={`/editcontact/${contact.id}`}>
-                            <i className="bi bi-pencil-fill"></i>
+        <div className="card col-12" style={{ marginBottom: "0", paddingBottom: "0" }}>
+            <div className="d-flex align-items-center">
+                <img
+                    src="https://picsum.photos/100/100"
+                    className="rounded-circle me-3"
+                    alt="..."
+                    style={{ width: "100px", height: "100px" }}
+                />
+                <div className="card-body info-card">
+                    <h5 className="card-title">{contact.name}</h5>
+                    <p className="card-text">
+                        <i className="fa fa-phone"></i> {contact.phone}
+                    </p>
+                    <p className="card-text">
+                        <i className="fa fa-envelope"></i> {contact.email}
+                    </p>
+                    <p className="card-text">
+                        <i className="fa fa-map-pin"></i> {contact.address}
+                    </p>
+                    <div className="d-flex justify-content-end align-items-center p-2">
+                        <Link to={`/EditContact/${contact.id}`} style={{ marginRight: "25px" }}>
+                            <i className="fa fa-pen"></i>
                         </Link>
-                        <i className="bi bi-trash" onClick={() => actions.delContact(contact.id)}></i>
+                        <i className="fa fa-trash" onClick={() => handleDelete(contact.id)}></i>
                     </div>
-                </div>  
-                ))
-            ):(
-                <></>
-            )}
+                </div>
+            </div>
         </div>
-    );
+    )
 };
 
 export default Card;
